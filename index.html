@@ -1,416 +1,125 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="description"
-        content="DreamActor-H1: High-Fidelity Human-Product Demonstration Video Generation via Motion-designed Diffusion Transformers.">
-  <meta name="keywords" content="Animation, Diffusion Transformer, Video Generation">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DreamActor-H1: High-Fidelity Human-Product Demonstration Video Generation via Motion-designed Diffusion Transformers</title>
+% CVPR 2024 Paper Template; see https://github.com/cvpr-org/author-kit
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
+\documentclass[10pt,twocolumn,letterpaper]{article}
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+\usepackage{cvpr}              % To produce the CAMERA-READY version
+%\usepackage[review]{cvpr}      % To produce the REVIEW version
+% \usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
 
-    gtag('js', new Date());
+% Import additional packages in the preamble file, before hyperref
+\input{preamble}
 
-    gtag('config', 'G-PYVRSFMDRL');
-  </script>
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, 
+% e.g. with the file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete *.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you should be clear).
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,citecolor=cvprblue]{hyperref}
+% begin self
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{bm}
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/favicon.svg">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
-
-  <style>
-    .section {
-      margin-top: 0rem; /* 增加章节之间的间距 */
-      margin-bottom: 0rem; /* 增加章节之间的间距 */
-    }
-
-    .content {
-      margin-bottom: 0rem; /* 减小章节内的间距 */
-    }
-
-    h2.title {
-      margin-bottom: 0rem; /* 恢复章节标题和正文之间的间距 */
-    }
-  </style>
-</head>
-<body>
+% end self
 
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-2 publication-title"><span class="rainbow-text">DreamActor-H1</span>: High-Fidelity Human-Product Demonstration Video Generation via Motion-designed Diffusion Transformers</h1>
-          <h1 class="title is-4 publication-title"></h1>
-          <div class="is-size-5 publication-authors">
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\paperID{} % *** Enter the Paper ID here
+\def\confName{}
+\def\confYear{2025}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{
+DreamActor-H1: High-Fidelity Human-Product Demonstration Video Generation via Motion-designed Diffusion Transformers
+}
+
+%%%%%%%%% AUTHORS - PLEASE UPDATE
+\author{
+  $\text{Lizhen Wang}^1$, $\text{Zhurong Xia}^1$\textsuperscript{*}, $\text{Tianshu Hu}^1$, 
+  $\text{Pengrui Wang}^1$, $\text{Pengfei Wei}^1$, \\
+  $\text{Zerong Zheng}^1$, $\text{Ming Zhou}^1$, $\text{Yuan Zhang}^1$, $\text{Mingyuan Gao}^1$
+  \\
+  ${}^1$ ByteDance Intelligent Creation
+  \\
+  \tt\small \{wanglizhen.2024, zhaogang.666, tianshu.hu, wangpengrui.chj, pengfei.wei, \\
+  \tt\small zerong, zhouming.9527\}@bytedance.com
+  \tt\small \{zhang.yuan09,gaomingyuan001\}@gmail.com
+}
+% Institution1 address\\
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+% \and
+% Second Author\\
+% Institution2\\
+% First line of institution2 address\\
+% {\tt\small secondauthor@i2.org}
+% \author[1,*]{Darth Vader}
+% \author[2]{Darth Sidious}
+% \affil[1]{Office of the Supreme Commander of the Imperial Forces, The Galactic Empire, The Bridge, Executor}
+% \affil[2]{Order of the Sith Lords, LiMerge Power Building, The Works, Coruscant}
+% \affil[*]{Corresponding author: Darth Vader, darth@vader.deathstar}
+
+\begin{document}
+
+\twocolumn[{%
+\renewcommand\twocolumn[1][]{#1}%
+\maketitle
+\begin{center}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=0.99\textwidth]{images/teaser.png}
+    \captionof{figure}{DreamActor-H1 can generate high-fidelity and photo-realistic human-product demonstration videos from human and product reference images.}
+    \label{fig:teaser}
+\end{center}%
+}]
+
+\let\thefootnote\relax\footnotetext{* Corresponding author \& project leader}
 
 
-              <!-- Video Link. -->
-              <!-- <span class="link-block">
-                <a href=""
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-youtube"></i>
-                  </span>
-                  <span>Video</span>
-                </a>
-              </span> -->
-              <!-- Code Link. -->
-              <!-- <span class="link-block">
-                <a href=""
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                  </a>
-              </span> -->
-              <!-- Dataset Link. -->
-              <!-- <span class="link-block">
-                <a href=""
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="far fa-images"></i>
-                  </span>
-                  <span>Data</span>
-                  </a> -->
+\begin{abstract}
+In e-commerce and digital marketing, generating high-fidelity human-product demonstration videos is important for effective product presentation. However, most existing frameworks either fail to preserve the identities of both humans and products or lack an understanding of human-product spatial relationships, leading to unrealistic representations and unnatural interactions.
+To address these challenges, we propose a Diffusion Transformer (DiT)-based framework. Our method simultaneously preserves human identities and product-specific details, such as logos and textures, by injecting paired human-product reference information and utilizing an additional masked cross-attention mechanism. We employ a 3D body mesh template and product bounding boxes to provide precise motion guidance, enabling intuitive alignment of hand gestures with product placements. Additionally, structured text encoding is used to incorporate category-level semantics, enhancing 3D consistency during small rotational changes across frames. Trained on a hybrid dataset with extensive data augmentation strategies, our approach outperforms state-of-the-art techniques in maintaining the identity integrity of both humans and products and generating realistic demonstration motions. Project page: https://lizhenwangt.github.io/DreamActor-H1/.
+\end{abstract}
 
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+\input{sections/intro}    
+\input{sections/related}
+\input{sections/method}
+\input{sections/exp}
+\input{sections/discussion}
 
-<section class="hero teaser">
-  <div class="container is-fullhd">
-    <div class="hero-body">
-      <h2 class="subtitle has-text-justified">
-        <p>
-          We present <span class="dnerf">DreamActor-H1</span>, a novel Diffusion Transformer (DiT)-based framework that generates high-quality human-product demonstration videos from paired human and product images. Trained on a large-scale hybrid dataset with multi-class augmentation, DreamActor-H1 outperforms state-of-the-art methods in preserving human-product identity integrity and generating physically plausible demonstration motions, making it suitable for personalized e-commerce advertising and interactive media.
-        </p>
-      </h2>
+\begin{figure*}
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/moreresults1.jpg}
+  \caption{Our video results generated from human images and product images.}
+  % \Description{}
+  \label{fig-1}
+\end{figure*}
 
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item">
-          <video id="teaser1" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/01.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser2" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/15.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser3" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/04.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser4" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/44.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser5" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/22.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser5" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/12.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser6" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/09.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser8" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/20.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser9" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/23.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser10" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/48.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser11" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/11.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser12" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/49.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser10" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/46.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser11" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/17.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item">
-          <video id="teaser12" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/11.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
+\begin{figure*}
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/moreresults2.jpg}
+  \caption{Our results generated from more human images and product images.}
+  % \Description{}
+  \label{fig-2}
+\end{figure*}
+\newpage
 
-    </div>
-  </div>
-</section>
+{
+    \bibliographystyle{ieeenat_fullname}
+    \bibliography{reference}
+}
 
 
+% WARNING: do not forget to delete the supplementary pages from your submission 
+%\input{sec/X_suppl}
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-4">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            In e-commerce and digital marketing, generating high-fidelity human-product demonstration videos is important for effective product presentation. However, most existing frameworks either fail to preserve the identities of both humans and products or lack an understanding of human-product spatial relationships, leading to unrealistic representations and unnatural interactions. To address these challenges, we propose a Diffusion Transformer (DiT)-based framework. Our method simultaneously preserves human identities and product-specific details, such as logos and textures, by injecting paired human-product reference information and utilizing an additional masked cross-attention mechanism. We employ a 3D body mesh template and product bounding boxes to provide precise motion guidance, enabling intuitive alignment of hand gestures with product placements. Additionally, structured text encoding is used to incorporate category-level semantics, enhancing 3D consistency during small rotational changes across frames. Trained on a hybrid dataset with extensive data augmentation strategies, our approach outperforms state-of-the-art techniques in maintaining the identity integrity of both humans and products and generating realistic demonstration motions.          </p>
-        </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
-
-    <!-- Method Illustration. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-4">Method Overview</h2>
-        <img src="./static/images/DreamActor-H1.jpeg"
-         class="interpolation-image"
-         alt="Interpolate start reference image."/>
-        <div class="content has-text-justified">
-        <p>
-          Overview of <span class="dnerf">DreamActor-H1</span>. DreamActor-H1 can generate high-fidelity human-product demonstration videos from a human reference image and a product reference image. Our framework is built upon a DiT architecture, specifically leveraging Seaweed-7B, a foundational model for video generation with around 7 billion (7B) parameters. In the dataset preparation phase, we initially use a Vision-Language Model (VLM) to describe the product and human images. Subsequently, pose estimation and bounding box detection are applied to the training product-human demonstration video. During the training stage, we combine the human pose and product bounding box with the input video noise to serve as motion guidance. Additionally, we encode the input human and product images using a variational autoencoder (VAE) to serve as appearance guidance. The descriptions of the human and product are utilized as supplementary information, enhancing the material visual quality and 3D consistency during small rotational changes across frames. Regarding the DiT model, we implement stacks of full attention, reference attention, and object attention. Notably, object attention incorporates the product latent as an extra input. During the inference stage, we implement automatic pose template selection based on human and product information. Overall, our approach can overcome the challenges of identity preservation, motion realism, and spatial relationship modeling, and produce high-quality human-product demonstration videos given a human and a product image as inputs.
-        </p>
-      </div>
-    </div>
-    <!--/ Method Illustration. -->
-
-    <!-- Paper video. -->
-<!--     <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Video</h2>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div> -->
-    <!--/ Paper video. -->
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-fullhd">
-    <!-- Diversity Section -->
-    <h2 class="title is-3">Diversity</h2>
-    <div class="content has-text-justified">
-      <p class="is-size-4">
-        Our method is robust to various humans and products.
-      </p>
-    </div>
-
-    <div id="diversity-carousel" class="carousel results-carousel">
-      <div class="item">
-        <video id="diversity1" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/02.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity2" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/05.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity3" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/35.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity3" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/06.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity4" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/08.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity5" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/14.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity6" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/56.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity7" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/45.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity8" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/26.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity9" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/29.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity10" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/36.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity10" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/41.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="item">
-        <video id="diversity11" autoplay controls muted loop playsinline height="100%">
-          <source src="./static/videos/42.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-
-    <h2 class="title is-3" style="margin-top: 1rem;">Comparing to SOTA Methods</h2>
-    
-    <!-- 添加描述文字 -->
-    <div class="content has-text-justified">
-      <p class="is-size-4">
-        Our method generates results with fine-grained product/human identity preservation, temporal consistency and high fidelity.
-      </p>
-    </div>
-
-    <div class="content has-text-justified">
-      <video id="ablation" autoplay controls muted loop playsinline height="100%">
-        <source src="./static/videos/comparisons.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <!-- Out-of-Distribution Section -->
-    <h2 class="title is-3" style="margin-top: 4rem;">Ablation study</h2>
-
-    <!-- 添加描述文字 -->
-    <div class="content has-text-justified">
-      <p class="is-size-4">
-        We compare our full model with our full model w/o text input and our full model w/o text input and w/o object attention (baseline).
-      </p>
-    </div>
-    <div class="content has-text-justified">
-      <video id="ablation" autoplay controls muted loop playsinline height="100%">
-        <source src="./static/videos/ablations.mp4" type="video/mp4">
-      </video>
-    </div>
-
-  </div>
-</section>
-
-
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <h2 class="title is-4">Ethics Concerns</h2>
-          <p>
-            The human and product images used in demos are all generated by Seedream 3.0, except for three products from AnchorCrafter with their logos replaced.
-          </p>
-          
-          <h2 class="title is-4">Acknowledgement</h2>
-          <p>
-            We would like to thank  <a href="https://nerfies.github.io/">Nerfies</a> for providing the website template.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
-
-
-<!-- <footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link"
-         href="./static/videos/nerfies_paper.mov">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            This means you are free to borrow the <a
-              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
-            we just ask that you link back to this page in the footer.
-            Please remember to remove the analytics code included in the header of the website which
-            you do not want on your website.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
-</body>
-</html> -->
+\end{document}
